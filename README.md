@@ -22,6 +22,10 @@ With this command were exported 2 files
 
 ## 5. Generate a new conda environment using a *.yml file.
 ```conda env create -f file_name.yml```
+## 6. Activate the new environment.
+```conda activate new_environment_name```
+## 7. Update the new conda environment using a *.yml file.
+```conda env update -f second_file.yml```
 
-## 6. List all conda environments.
+## 8. List all conda environments.
 ```conda env list```
