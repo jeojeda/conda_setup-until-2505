@@ -29,3 +29,32 @@ With this command were exported 2 files
 
 ## 8. List all conda environments.
 ```conda env list```
+
+# New environment and install Kaolin
+## Ref. from https://github.com/nv-tlabs/FlexiCubes?tab=readme-ov-file
+1. ```conda create --name FlexiCubes```
+
+2. ```conda activate FlexiCubes```
+
+3. ```pip install kaolin==0.17.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.0.1_cu118.html```
+
+4. ```conda install pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.3 -c pytorch```
+
+5. ```pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118```
+
+6. ```pip install imageio trimesh tqdm matplotlib torch_scatter ninja```
+
+//conda env remove --name flexicubes  //
+## Install CUDA v 11.8 https://developer.nvidia.com/cuda-11-8-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local
+# Anaconda Prompt (run as administrator)
+1.```conda update conda -y```
+2.```conda create -n flexicubestorch python=3.9 -y```
+3.```conda activate flexicubestorch```
+4.```pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu118```
+#change to C:\Users\user_name>
+5.```pip install flask ipython "jupyter-client<8" tornado tqdm lxml XlsxWriter```
+6.```conda env export --name flexicubestorch > flexicubestorch_env.yml```
+
+
+
+
