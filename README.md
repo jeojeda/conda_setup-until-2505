@@ -56,5 +56,9 @@ With this command were exported 2 files
 6.```conda env export --name flexicubestorch > flexicubestorch_env.yml```
 
 
+## New instalation
+
+
+
 
 
