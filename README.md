@@ -49,6 +49,107 @@ pip install kaolin==0.15.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/t
 git clone https://github.com/nv-tlabs/FlexiCubes.git
 cd FlexiCubes
 
+
+
+# 🧱 Instalación de FlexiCubes con PyTorch 1.12.0, CUDA 11.3 y Kaolin 0.15.0 (first try)
+
+Este entorno ha sido probado con éxito en Windows 10/11. Sigue los pasos a continuación para reproducir la instalación y ejecución del repositorio [FlexiCubes](https://github.com/nv-tlabs/FlexiCubes).
+
+---
+
+## 🔧 Requisitos previos
+
+- Anaconda
+- CUDA Toolkit **11.3** (descargar desde [NVIDIA](https://developer.nvidia.com/cuda-11.3.0-download-archive))
+- Visual Studio 2019 Community Edition con:
+  - **MSVC v14.29**
+  - **Windows 10 SDK (10.0.19041.0)**
+  - **C++ CMake tools for Windows**
+
+---
+
+## 🐍 Paso 1: Crear entorno Conda
+
+```bash
+conda create -n flexicubesconda python=3.9 -y
+conda activate flexicubesconda
+```
+
+---
+
+## 📦 Paso 2: Instalar PyTorch compatible con CUDA 11.3
+
+```bash
+pip install torch==1.12.0 torchvision==0.13.0 --extra-index-url https://download.pytorch.org/whl/cu113
+```
+
+---
+
+## 📦 Paso 3: Instalar Kaolin 0.15.0 para PyTorch 1.12.0 + cu113
+
+```bash
+pip install kaolin==0.15.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-1.12.0_cu113.html
+```
+
+---
+
+## 📦 Paso 4: Instalar dependencias adicionales
+
+```bash
+pip install imageio trimesh tqdm matplotlib ninja
+```
+
+---
+
+## ⚠️ Paso 5: Configurar compilador
+
+- Ejecutar desde el **Developer Command Prompt for VS2019 (x64)**.
+- Verificar que el compilador `cl.exe` esté disponible:
+
+```bash
+cl /Bv
+```
+
+- Confirmar que las variables de entorno incluyen los headers de Windows Kits:
+
+```bash
+echo %INCLUDE%
+```
+
+Debe incluir rutas similares a:
+
+```
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um
+```
+
+- Si falta `stddef.h`, **reparar Visual Studio 2019** y asegurarse de haber instalado el SDK correcto.
+
+---
+
+## 📂 Paso 6: Clonar y entrar al repositorio FlexiCubes
+
+```bash
+git clone https://github.com/nv-tlabs/FlexiCubes.git
+cd FlexiCubes
+```
+
+---
+
+## ▶️ Paso 7: Ejecutar optimizador
+
+```bash
+python examples/optimize.py --ref_mesh data/inputmodels/block.obj --out_dir out/block
+```
+
+---
+
+## ✅ Notas finales
+
+- Este entorno **no utiliza CUDA 11.8**, por lo que puede desinstalarse si no se usa en otros proyectos.
+- Todos los pasos anteriores fueron validados manualmente en un entorno real hasta lograr una ejecución exitosa.
+
+
 # Instalación completa de FlexiCubes en Windows
 
 # 1. Crear entorno Conda
@@ -106,3 +207,4 @@ python optimize.py --ref_mesh data/inputmodels/block.obj --out_dir out/block
 # Resultado esperado
 # optimization step 0/100, loss: ...
 # => ¡FlexiCubes funcionando correctamente!
+
