@@ -30,35 +30,79 @@ With this command were exported 2 files
 ## 8. List all conda environments.
 ```conda env list```
 
-# New environment and install Kaolin
-## Ref. from https://github.com/nv-tlabs/FlexiCubes?tab=readme-ov-file
-1. ```conda create --name FlexiCubes```
+# New environment and install Flexicubes
+# Instalación correcta de FlexiCubes en Windows
 
-2. ```conda activate FlexiCubes```
+Este instructivo documenta todos los pasos requeridos y probados para compilar y ejecutar correctamente [FlexiCubes](https://github.com/nv-tlabs/FlexiCubes) en Windows con CUDA.
 
-3. ```pip install kaolin==0.17.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.0.1_cu118.html```
+---
 
-4. ```conda install pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.3 -c pytorch```
+## 1. Crear entorno Conda
+```bash
+conda create -n flexicubesconda python=3.9 -y
+conda activate flexicubesconda
 
-5. ```pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118```
+pip install torch==1.12.0+cu113 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
 
-6. ```pip install imageio trimesh tqdm matplotlib torch_scatter ninja```
+pip install kaolin==0.15.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-1.12.0_cu113.html
 
-//conda env remove --name flexicubes  //
-## Install CUDA v 11.8 https://developer.nvidia.com/cuda-11-8-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local
-# Anaconda Prompt (run as administrator)
-1.```conda update conda -y```
-2.```conda create -n flexicubestorch python=3.9 -y```
-3.```conda activate flexicubestorch```
-4.```pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu118```
-#change to C:\Users\user_name>
-5.```pip install flask ipython "jupyter-client<8" tornado tqdm lxml XlsxWriter```
-6.```conda env export --name flexicubestorch > flexicubestorch_env.yml```
+git clone https://github.com/nv-tlabs/FlexiCubes.git
+cd FlexiCubes
 
+# Instalación completa de FlexiCubes en Windows
 
-## New instalation
+# 1. Crear entorno Conda
+conda create -n flexicubesconda python=3.9 -y
+conda activate flexicubesconda
 
+# 2. Instalar PyTorch con CUDA 11.3
+pip install torch==1.12.0+cu113 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
 
+# 3. Instalar Kaolin compatible
+pip install kaolin==0.15.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-1.12.0_cu113.html
 
+# 4. Clonar FlexiCubes
+git clone https://github.com/nv-tlabs/FlexiCubes.git
+cd FlexiCubes
 
+# 5. Clonar nvdiffrast si no está
+git clone https://github.com/NVlabs/nvdiffrast.git
+cd nvdiffrast
 
+# 6. Instalar Visual Studio 2019 Community con:
+# - MSVC v14.29 (v142)
+# - Windows 10 SDK (10.0.19041.0)
+# - C++ Desktop Development
+
+# Verifica que el archivo exista:
+# C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\basetsd.h
+# Si no, instala manualmente el SDK desde:
+# https://developer.microsoft.com/en-us/windows/downloads/sdk-archive/
+
+# 7. Crear archivo setup_flexicubes_vs2019.bat en nvdiffrast con:
+
+@echo off
+CALL "%USERPROFILE%\anaconda3\Scripts\activate.bat" flexicubesconda
+SET DISTUTILS_USE_SDK=1
+SET MSSdk=1
+SET CL=/D_HAS_ITERATOR_DEBUGGING=0 /MD /EHsc
+SET LINKFLAGS=/DEFAULTLIB:libcpmt.lib
+SET INCLUDE=%INCLUDE%;C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared
+CD /D %~dp0
+python -m pip install . --force-reinstall --no-cache-dir
+pause
+
+# 8. Ejecutar el script
+cd nvdiffrast
+..\setup_flexicubes_vs2019.bat
+
+# 9. Si hay error binario con numpy:
+pip install numpy==1.23.5
+
+# 10. Ejecutar ejemplo
+cd examples
+python optimize.py --ref_mesh data/inputmodels/block.obj --out_dir out/block
+
+# Resultado esperado
+# optimization step 0/100, loss: ...
+# => ¡FlexiCubes funcionando correctamente!
