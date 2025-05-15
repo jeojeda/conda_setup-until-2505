@@ -14,7 +14,7 @@ Componentes requeridos:
 - **Windows 10 SDK (10.0.19041.0)**
 - **C++ Desktop Development Tools**
 
-Verifica que el archivo `basetsd.h` exista en:
+Verifica que el archivo `basetsd.h` exista en la siguiente carpeta (o dentro de C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\):
 
 ```
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\basetsd.h
@@ -34,10 +34,19 @@ conda activate flexicubesconda
 
 ---
 
+## 2.1: Instalar `cudatoolkit` 11.3 dentro del entorno
+
+```bash
+conda install -c conda-forge cudatoolkit=11.3
+```
+
+---
+
 #### 3. Instalar dependencias principales
 
 ```bash
 pip install torch==1.12.0+cu113 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
+-------en caso de error probar pip install torch==1.12.0+cu113 torchvision==0.13.0+cu113 torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cu113 -------
 pip install kaolin==0.15.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-1.12.0_cu113.html
 pip install imageio trimesh tqdm matplotlib ninja
 ```
